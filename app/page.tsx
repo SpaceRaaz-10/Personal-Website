@@ -10,6 +10,14 @@ import FooterCTA from './components/FooterCTA';
 const SYNE = "'Syne', sans-serif";
 const SF = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif";
 
+// Your uploaded transparent PNG
+const PERSON_MASK_URL = '/person.png'; 
+
+// ⚠️ YELLOW COLOR SETTINGS ⚠️
+// Premium yellow (change to '#FFFF00' for pure neon yellow)
+const SOLID_TEXT_COLOR = '#FACC15'; 
+const OUTLINE_TEXT_COLOR = '#FACC15'; 
+
 const featuredProjects: Project[] = [
   { id: 1, title: 'Trekking Website', category: 'Website Design', year: '2024', description: 'A clean, user-friendly trekking platform focused on clear navigation, immersive visuals, and effortless trip discovery.', primaryImage: 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=1600&auto=format&fit=crop', secondaryImage: 'https://images.unsplash.com/photo-1533130061792-64b345e4a833?q=80&w=800&auto=format&fit=crop' },
   { id: 2, title: 'Real Estate Dashboard', category: 'Backend Dashboard', year: '2024', description: 'A real estate admin dashboard built for effortless property management.', primaryImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop', secondaryImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop' },
@@ -17,197 +25,171 @@ const featuredProjects: Project[] = [
   { id: 4, title: 'Juicy Smoothie', category: 'Website Design', year: '2023', description: 'A vibrant, appetite-driven website for a smoothie brand with bold type and product-first visuals.', primaryImage: 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?q=80&w=1600&auto=format&fit=crop', secondaryImage: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?q=80&w=800&auto=format&fit=crop' },
 ];
 
-const stageItems = [
-  { img: 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=800&auto=format&fit=crop', label: 'Trekking Website', sub: 'Website Design' },
-  { img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop', label: 'Real Estate', sub: 'Dashboard' },
-  { img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop', label: 'Mountain Info', sub: 'Website' },
-  { img: 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?q=80&w=800&auto=format&fit=crop', label: 'Juicy Smoothie', sub: 'Branding' },
-  { img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop', label: 'Gym Tracker', sub: 'Mobile App' },
-];
-
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end end'] });
 
-  // Carousel rotates on scroll
-  const carouselRotate = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  // Person scales up and fades late
-  const personScale = useTransform(scrollYProgress, [0, 0.7], [1, 1.25]);
-  const personOpacity = useTransform(scrollYProgress, [0.55, 0.9], [1, 0]);
-  // Center text fades early
-  const centerTextOpacity = useTransform(scrollYProgress, [0.25, 0.5], [1, 0]);
-  // Chrome (logo, playback bar) fades first
-  const chromeOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  // Whole stage fades late
-  const stageOpacity = useTransform(scrollYProgress, [0.75, 1], [1, 0.15]);
+  // Scroll animations
+  const photoScale = useTransform(scrollYProgress, [0, 0.8], [1, 1.2]);
+  const photoOpacity = useTransform(scrollYProgress, [0.5, 0.85], [1, 0]);
+  const leftTextX = useTransform(scrollYProgress, [0, 0.6], ['0%', '-40%']);
+  const rightTextX = useTransform(scrollYProgress, [0, 0.6], ['0%', '40%']);
+  const topBottomOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const typeOpacity = useTransform(scrollYProgress, [0.4, 0.8], [1, 0]);
 
   return (
     <main className="min-h-screen bg-white" style={{ fontFamily: SF }}>
       <Navbar />
 
-      {/* ============================================================
-          CONCEPT A — THE GOLD STAGE
-      ============================================================ */}
-      <section ref={heroRef} data-nav-theme="light" className="relative h-[250vh]">
-        <div className="sticky top-0 h-screen w-full overflow-hidden">
+      {/* MAGAZINE HERO */}
+      <section ref={heroRef} data-nav-theme="dark" className="relative h-[250vh] bg-black">
+        <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
 
-          {/* Gold gradient background */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'radial-gradient(ellipse at 50% 40%, #f5c042 0%, #e8a317 40%, #9c650a 100%)',
-            }}
-          />
+          {/* Top metadata bar */}
+          <motion.div
+            style={{ opacity: topBottomOpacity, fontFamily: SF }}
+            className="absolute top-24 left-6 right-6 md:left-12 md:right-12 z-30 flex justify-between items-center text-[11px] uppercase tracking-[0.3em] text-white/60"
+          >
+            <span className="border border-white/30 rounded-full px-4 py-1.5">RWYR25</span>
+            <span className="hidden md:block">Portfolio · Vol. 01</span>
+            <span>★ 2024 — 2025</span>
+          </motion.div>
 
-          {/* Chrome layer (logo, bottom info, playback bar) — fades first */}
-          <motion.div style={{ opacity: chromeOpacity }} className="absolute inset-0 z-40 pointer-events-none">
+          {/* Background Glow */}
+          <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.05) 0%, transparent 70%)' }} />
 
-            {/* SPACERAJ logo top-center */}
-            <div className="absolute top-24 left-0 right-0 flex justify-center items-center gap-3">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="11" fill="rgba(255,255,255,0.95)" />
-                <path
-                  d="M7 9.5c3.5-1 7-.7 10 1M7.5 13c3-.9 6-.5 8.5.9M8 16c2.2-.7 4.5-.3 6.5.8"
-                  stroke="#c47f0a"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="text-white font-semibold text-xl tracking-tight" style={{ fontFamily: SF }}>
-                SPACERAJ
-              </span>
-            </div>
-
-            {/* Bottom-left copyright */}
-            <div className="absolute bottom-8 left-6 md:left-12 hidden md:block">
-              <p className="text-white/60 text-[10px] uppercase tracking-[0.3em] leading-loose" style={{ fontFamily: SF }}>
-                © 2024 — Archive<br />by Raj Sigdel
-              </p>
-            </div>
-
-            {/* Bottom-right CTA */}
-            <div className="absolute bottom-8 right-6 md:right-12 hidden md:block pointer-events-auto">
-              <Link
-                href="/work"
-                className="text-white/85 hover:text-white text-[10px] uppercase tracking-[0.3em] border-b border-white/40 hover:border-white pb-1 transition-colors"
-                style={{ fontFamily: SF }}
+          {/* MAGAZINE TEXT EFFECT */}
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none px-4">
+            
+            {/* LAYER 1: Solid Text (Behind) */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <motion.h1
+                style={{ x: leftTextX, opacity: typeOpacity, fontFamily: SYNE, letterSpacing: '-0.05em', color: SOLID_TEXT_COLOR }}
+                className="font-black leading-[0.85] text-[20vw] md:text-[15vw] self-start -ml-[2vw]"
               >
-                View Work →
-              </Link>
+                RAJ
+              </motion.h1>
+              <motion.h1
+                style={{ x: rightTextX, opacity: typeOpacity, fontFamily: SYNE, letterSpacing: '-0.05em', color: SOLID_TEXT_COLOR }}
+                className="font-black leading-[0.85] text-[20vw] md:text-[15vw] self-end -mr-[2vw] -mt-[2vw]"
+              >
+                SIGDEL
+              </motion.h1>
             </div>
 
-            {/* Playback bar */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-[88%] max-w-2xl hidden md:block">
-              <div className="flex items-center gap-4 bg-black/35 backdrop-blur-xl border border-white/20 rounded-full px-5 py-3 shadow-2xl">
-                <div className="flex items-center gap-3 text-white/85">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11 12L20 6v12L11 12zM4 6h3v12H4z" />
-                  </svg>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <rect x="6" y="5" width="4" height="14" rx="1" />
-                    <rect x="14" y="5" width="4" height="14" rx="1" />
-                  </svg>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M13 12L4 6v12l9-6zM17 6h3v12h-3z" />
-                  </svg>
-                </div>
-                <div className="flex-1 h-1 rounded-full bg-white/20 overflow-hidden">
-                  <div className="h-full w-[38%] bg-white rounded-full" />
-                </div>
-                <span className="text-white/70 text-[11px] tabular-nums" style={{ fontFamily: SF }}>
-                  2:14 / 5:00
-                </span>
+            {/* LAYER 2: Person Cutout (Middle) */}
+            <motion.div
+              style={{ scale: photoScale, opacity: photoOpacity }}
+              className="absolute inset-0 flex items-center justify-center z-10"
+            >
+              <img
+                src={PERSON_MASK_URL}
+                alt="Person"
+                className="h-full w-auto object-contain pointer-events-none"
+              />
+            </motion.div>
+
+            {/* LAYER 3: Masked Outline Text (Front) */}
+            <div 
+              className="absolute inset-0 flex flex-col items-center justify-center z-20"
+              style={{
+                WebkitMaskImage: `url(${PERSON_MASK_URL})`,
+                WebkitMaskSize: 'contain',
+                WebkitMaskRepeat: 'no-repeat',
+                WebkitMaskPosition: 'center',
+                maskImage: `url(${PERSON_MASK_URL})`,
+                maskSize: 'contain',
+                maskRepeat: 'no-repeat',
+                maskPosition: 'center',
+              }}
+            >
+              <motion.h1
+                style={{
+                  x: leftTextX,
+                  opacity: typeOpacity,
+                  fontFamily: SYNE,
+                  letterSpacing: '-0.05em',
+                  WebkitTextStroke: '2px ' + OUTLINE_TEXT_COLOR,
+                }}
+                className="text-transparent font-black leading-[0.85] text-[20vw] md:text-[15vw] self-start -ml-[2vw]"
+              >
+                RAJ
+              </motion.h1>
+              <motion.h1
+                style={{
+                  x: rightTextX,
+                  opacity: typeOpacity,
+                  fontFamily: SYNE,
+                  letterSpacing: '-0.05em',
+                  WebkitTextStroke: '2px ' + OUTLINE_TEXT_COLOR,
+                }}
+                className="text-transparent font-black leading-[0.85] text-[20vw] md:text-[15vw] self-end -mr-[2vw] -mt-[2vw]"
+              >
+                SIGDEL
+              </motion.h1>
+            </div>
+
+          </div>
+
+          {/* BOTTOM METADATA */}
+          <motion.div
+            style={{ opacity: topBottomOpacity }}
+            className="absolute bottom-8 left-6 right-6 md:left-12 md:right-12 z-30 flex justify-between items-end gap-6"
+          >
+            <div className="flex items-center gap-4">
+              <svg width="80" height="32" viewBox="0 0 80 32" xmlns="http://www.w3.org/2000/svg">
+                <g fill="#ffffff">
+                  <rect x="0" y="0" width="2" height="32" />
+                  <rect x="4" y="0" width="1" height="32" />
+                  <rect x="7" y="0" width="3" height="32" />
+                  <rect x="12" y="0" width="1" height="32" />
+                  <rect x="15" y="0" width="2" height="32" />
+                  <rect x="19" y="0" width="4" height="32" />
+                  <rect x="25" y="0" width="1" height="32" />
+                  <rect x="28" y="0" width="2" height="32" />
+                  <rect x="32" y="0" width="3" height="32" />
+                  <rect x="37" y="0" width="1" height="32" />
+                  <rect x="40" y="0" width="2" height="32" />
+                  <rect x="44" y="0" width="1" height="32" />
+                  <rect x="47" y="0" width="3" height="32" />
+                  <rect x="52" y="0" width="2" height="32" />
+                  <rect x="56" y="0" width="1" height="32" />
+                  <rect x="59" y="0" width="4" height="32" />
+                  <rect x="65" y="0" width="1" height="32" />
+                  <rect x="68" y="0" width="2" height="32" />
+                  <rect x="72" y="0" width="3" height="32" />
+                  <rect x="77" y="0" width="1" height="32" />
+                </g>
+              </svg>
+              <div className="text-[10px] uppercase tracking-[0.3em] text-white/50" style={{ fontFamily: SF }}>
+                Limited<br />Edition
+              </div>
+            </div>
+
+            <div className="hidden md:block text-center max-w-md text-[11px] uppercase tracking-[0.25em] text-white/40 leading-relaxed" style={{ fontFamily: SF }}>
+              Striped of color, nothing is hidden.<br />
+              Only form, attitude, and presence remain.
+            </div>
+
+            <div className="text-right">
+              <div className="text-[10px] uppercase tracking-[0.3em] text-white/50" style={{ fontFamily: SF }}>
+                Issue<br />01 · 25
               </div>
             </div>
           </motion.div>
 
-          {/* 3D CAROUSEL — rotates on scroll */}
-          <motion.div
-            style={{ opacity: stageOpacity }}
-            className="absolute inset-0 z-10 flex items-center justify-center"
-          >
-            <div
-              className="relative w-full h-full"
-              style={{ perspective: '1600px' }}
-            >
-              <motion.div
-                style={{
-                  rotateY: carouselRotate,
-                  transformStyle: 'preserve-3d',
-                  position: 'absolute',
-                  inset: 0,
-                }}
-              >
-                {stageItems.map((item, i) => {
-                  const angle = (i / stageItems.length) * 360;
-                  const rad = (angle * Math.PI) / 180;
-                  const R = 420;
-                  const x = Math.sin(rad) * R;
-                  const z = Math.cos(rad) * R;
-                  const cardRotateY = -angle;
-
-                  return (
-                    <div
-                      key={i}
-                      className="absolute top-1/2 left-1/2 rounded-3xl overflow-hidden shadow-2xl border-2 border-white/25"
-                      style={{
-                        width: 220,
-                        height: 300,
-                        transform: `translate3d(calc(-50% + ${x}px), -50%, ${z}px) rotateY(${cardRotateY}deg)`,
-                        transformStyle: 'preserve-3d',
-                      }}
-                    >
-                      <img src={item.img} alt={item.label} className="w-full h-full object-cover" />
-                      <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/85 to-transparent">
-                        <p className="text-white text-sm font-semibold" style={{ fontFamily: SF }}>
-                          {item.label}
-                        </p>
-                        <p className="text-white/60 text-xs" style={{ fontFamily: SF }}>
-                          {item.sub}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </motion.div>
+          {/* SIDE PILLS */}
+          <motion.div style={{ opacity: topBottomOpacity }} className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 z-30 hidden md:block">
+            <div className="text-[10px] uppercase tracking-[0.3em] text-white/50 leading-loose" style={{ fontFamily: SF }}>
+              UX/UI<br />Designer<br /><span className="text-white/30">· QA Mindset ·</span>
             </div>
           </motion.div>
 
-          {/* CENTER PERSON — in front of the carousel */}
-          <motion.div
-            style={{ scale: personScale, opacity: personOpacity }}
-            className="absolute left-1/2 bottom-0 -translate-x-1/2 z-20 pointer-events-none"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop"
-              alt="Raj Sigdel"
-              className="h-[75vh] w-auto object-cover grayscale contrast-125 rounded-t-3xl"
-              style={{
-                maskImage: 'linear-gradient(to top, transparent 0%, black 20%, black 100%)',
-                WebkitMaskImage: 'linear-gradient(to top, transparent 0%, black 20%, black 100%)',
-              }}
-            />
+          <motion.div style={{ opacity: topBottomOpacity }} className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 z-30 hidden md:block">
+            <Link href="/work" className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-white hover:text-white/60 transition-colors border-b border-white/30 hover:border-white pb-2" style={{ fontFamily: SF }}>
+              View Work →
+            </Link>
           </motion.div>
-
-          {/* CENTER TEXT overlay */}
-          <motion.div
-            style={{ opacity: centerTextOpacity }}
-            className="absolute left-0 right-0 top-[28%] z-30 text-center pointer-events-none px-8"
-          >
-            <p className="text-white/75 text-[10px] uppercase tracking-[0.45em] mb-4" style={{ fontFamily: SF }}>
-              Now Playing
-            </p>
-            <h1
-              className="text-white font-black text-5xl md:text-7xl tracking-tight leading-[0.95]"
-              style={{ fontFamily: SYNE, letterSpacing: '-0.03em', textShadow: '0 4px 40px rgba(0,0,0,0.35)' }}
-            >
-              Raj Sigdel
-            </h1>
-            <p className="text-white/70 text-sm md:text-base mt-3 font-light tracking-wide" style={{ fontFamily: SF }}>
-              UX/UI Designer · QA Mindset
-            </p>
-          </motion.div>
-
         </div>
       </section>
 
@@ -227,16 +209,7 @@ export default function Home() {
 
       <StackedProjects projects={featuredProjects} />
 
-      <FooterCTA
-        line1="Let's build"
-        line2="something."
-        line2Gradient="something."
-        subtitle="Currently open to freelance projects and full-time UX/UI opportunities worldwide."
-        email="rajsigdel1000@gmail.com"
-        emailLabel="Reach me on mail"
-        ctaLabel="Get In Touch →"
-        ctaHref="/contact"
-      />
+      <FooterCTA line1="Let's build" line2="something." line2Gradient="something." subtitle="Currently open to freelance projects and full-time UX/UI opportunities worldwide." email="rajsigdel1000@gmail.com" emailLabel="Reach me on mail" ctaLabel="Get In Touch →" ctaHref="/contact" />
     </main>
   );
 }
