@@ -1,5 +1,5 @@
 'use client';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Navbar from './components/Navbar';
@@ -11,7 +11,7 @@ const SYNE = "'Syne', sans-serif";
 const SF = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif";
 
 // Your uploaded transparent PNG
-const PERSON_MASK_URL = '/person.png'; 
+const PERSON_MASK_URL = '/person2.png'; 
 
 // ⚠️ YELLOW COLOR SETTINGS ⚠️
 // Premium yellow (change to '#FFFF00' for pure neon yellow)
