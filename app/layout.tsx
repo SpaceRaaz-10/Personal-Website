@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from 'next';
-import './app/globals.css';
+import './globals.css';
 import SmoothScroll from './components/SmoothScroll';
 
 export const metadata: Metadata = {
   title: 'Raj Sigdel | UX/UI Designer',
   description: 'Designing extraordinary digital experiences.',
-  metadataBase: new URL('https://rajsigdel.com'), // change to your real domain later
+  metadataBase: new URL('https://rajsigdel.com.np'), // change to your real domain later
   openGraph: {
     title: 'Raj Sigdel | UX/UI Designer',
     description: 'Designing extraordinary digital experiences.',
