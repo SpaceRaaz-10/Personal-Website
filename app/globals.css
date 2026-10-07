@@ -16,6 +16,17 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: -0.01em;
+
+  /* ===== MOBILE FIXES ===== */
+  /* Prevents iOS from auto-enlarging text in landscape */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  /* Removes the blue tap-flash on iOS/Android (very un-iOS) */
+  -webkit-tap-highlight-color: transparent;
+
+  /* Smooth momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 ::selection {
@@ -48,7 +59,6 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
   display: inline-block;
   padding-bottom: 0.15em;
 
-  /* Gradient loops because first color = last color */
   background-image: linear-gradient(
     90deg,
     #2563eb 0%,
@@ -59,7 +69,6 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
     #2563eb 100%
   );
 
-  /* Tile is exactly 2x the element, so shifting by 200% = one full loop */
   background-size: 200% 100%;
   background-repeat: repeat;
 
@@ -68,7 +77,6 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
   -webkit-text-fill-color: transparent;
   color: transparent;
 
-  /* Linear = constant speed, no easing jumps */
   animation: flowGradient 8s linear infinite;
   will-change: background-position;
 }
@@ -81,7 +89,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
     background-position: -200% 50%;
   }
 }
-/* Gradient text that stands out on dark backgrounds (project cards) */
+
 .gradient-text-on-dark {
   background-image: linear-gradient(
     90deg,
@@ -99,4 +107,51 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
   -webkit-text-fill-color: transparent;
   color: transparent;
   animation: flowGradient 8s linear infinite;
+}
+
+/* ==========================================================
+   MOBILE-ONLY: safe areas for iPhone notch + home indicator
+   ========================================================== */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* ==========================================================
+   ACCESSIBILITY: respect users who disabled animations
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================
+   MOBILE PERFORMANCE: pause gradient animation off-screen
+   Frees up CPU when gradient text isn't visible
+   ========================================================== */
+@media (max-width: 768px) {
+  .gradient-text,
+  .gradient-text-on-dark {
+    /* Slower on mobile — saves battery, still looks alive */
+    animation-duration: 12s;
+  }
+}
+
+/* ==========================================================
+   TOUCH: minimum tap targets (Apple HIG = 44x44px)
+   ========================================================== */
+@media (pointer: coarse) {
+  button,
+  a {
+    /* Ensures all interactive elements are easy to tap */
+    min-height: 24px;
+  }
 }

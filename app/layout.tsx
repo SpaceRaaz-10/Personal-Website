@@ -1,10 +1,25 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import SmoothScroll from './components/SmoothScroll';
 
 export const metadata: Metadata = {
   title: 'Raj Sigdel | UX/UI Designer',
   description: 'Designing extraordinary digital experiences.',
+  metadataBase: new URL('https://rajsigdel.com'), // change to your real domain later
+  openGraph: {
+    title: 'Raj Sigdel | UX/UI Designer',
+    description: 'Designing extraordinary digital experiences.',
+    type: 'website',
+  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: 'cover', // enables safe-area insets on iPhone notch
+  themeColor: '#000000', // mobile browser UI color
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -21,7 +36,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.cdnfonts.com/css/sf-pro-display"
           rel="stylesheet"
         />
-      <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,700;6..96,900&display=swap" rel="stylesheet" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,700;6..96,900&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="bg-white text-black antialiased">
         <SmoothScroll>{children}</SmoothScroll>

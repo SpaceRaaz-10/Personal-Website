@@ -11,19 +11,17 @@ export default function AnimatedBackground() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // ===== RESPONSIVE SETUP =====
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isTablet = window.matchMedia('(max-width: 1024px)').matches;
+    const sizeScale = isMobile ? 0.55 : isTablet ? 0.8 : 1.0;
+    const starCount = isMobile ? 130 : isTablet ? 200 : 280;
+    const TEX = isMobile ? 120 : 180;
+    const DPR_CAP = isMobile ? 1.5 : 2;
+
     let w = canvas.offsetWidth;
     let h = canvas.offsetHeight;
-
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      w = canvas.offsetWidth;
-      h = canvas.offsetHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
-    };
-    resize();
+    let isInitialized = false;
 
     // ===== NOISE =====
     const makeNoise = (seed: number) => {
@@ -71,7 +69,6 @@ export default function AnimatedBackground() {
     const mix = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 
     // ===== TEXTURE BAKE =====
-    const TEX = 180;
     const bakeTexture = (planet: any) => {
       const off = document.createElement('canvas');
       off.width = TEX;
@@ -182,24 +179,27 @@ export default function AnimatedBackground() {
       hasRing?: boolean; ringColor?: string;
       spinning: number; spinSpeed: number; seed: number;
       texture: HTMLCanvasElement | null;
+      baseRadius: number;
     };
 
+    const baseSizes = [46, 64, 60, 46, 34];
+
     const planets: Planet[] = [
-      { x: w * 0.22, y: h * 0.35, vx: 0.15, vy: -0.1, radius: 46, mass: 46, type: 'rocky',
-        palette: { hi: '#ffcaa0', mid: '#c95a1e', lo: '#3a1206', accent: '#8a2a0a', accentAlt: '#ffd6b0' },
+      { x: w * 0.22, y: h * 0.35, vx: 0.15, vy: -0.1, radius: baseSizes[0] * sizeScale, mass: baseSizes[0] * sizeScale, baseRadius: baseSizes[0],
+        type: 'rocky', palette: { hi: '#ffcaa0', mid: '#c95a1e', lo: '#3a1206', accent: '#8a2a0a', accentAlt: '#ffd6b0' },
         spinning: 0, spinSpeed: 0.0006, seed: 1, texture: null },
-      { x: w * 0.72, y: h * 0.3, vx: -0.2, vy: 0.15, radius: 64, mass: 64, type: 'gas',
-        palette: { hi: '#fff1c9', mid: '#c69c6d', lo: '#3a2614', accent: '#a8734a', accentAlt: '#f5d9a8' },
+      { x: w * 0.72, y: h * 0.3, vx: -0.2, vy: 0.15, radius: baseSizes[1] * sizeScale, mass: baseSizes[1] * sizeScale, baseRadius: baseSizes[1],
+        type: 'gas', palette: { hi: '#fff1c9', mid: '#c69c6d', lo: '#3a2614', accent: '#a8734a', accentAlt: '#f5d9a8' },
         spinning: 0, spinSpeed: -0.0004, seed: 2, texture: null },
-      { x: w * 0.82, y: h * 0.72, vx: 0.1, vy: 0.08, radius: 60, mass: 60, type: 'gas',
-        palette: { hi: '#fff3c4', mid: '#d4a72c', lo: '#3a2708', accent: '#c49020', accentAlt: '#fce8a0' },
+      { x: w * 0.82, y: h * 0.72, vx: 0.1, vy: 0.08, radius: baseSizes[2] * sizeScale, mass: baseSizes[2] * sizeScale, baseRadius: baseSizes[2],
+        type: 'gas', palette: { hi: '#fff3c4', mid: '#d4a72c', lo: '#3a2708', accent: '#c49020', accentAlt: '#fce8a0' },
         hasRing: true, ringColor: 'rgba(253, 230, 138, 0.9)',
         spinning: 0, spinSpeed: 0.0003, seed: 3, texture: null },
-      { x: w * 0.28, y: h * 0.75, vx: -0.12, vy: 0.05, radius: 46, mass: 46, type: 'earth',
-        palette: { hi: '#dbeafe', mid: '#0a3d8f', lo: '#031238', accent: '#2d7a3e', accentAlt: '#8b6f3d' },
+      { x: w * 0.28, y: h * 0.75, vx: -0.12, vy: 0.05, radius: baseSizes[3] * sizeScale, mass: baseSizes[3] * sizeScale, baseRadius: baseSizes[3],
+        type: 'earth', palette: { hi: '#dbeafe', mid: '#0a3d8f', lo: '#031238', accent: '#2d7a3e', accentAlt: '#8b6f3d' },
         spinning: 0, spinSpeed: 0.0008, seed: 4, texture: null },
-      { x: w * 0.5, y: h * 0.55, vx: 0.05, vy: -0.12, radius: 34, mass: 34, type: 'ice',
-        palette: { hi: '#ffffff', mid: '#a5f3fc', lo: '#0b2a35', accent: '#67e8f9', accentAlt: '#e0f7ff' },
+      { x: w * 0.5, y: h * 0.55, vx: 0.05, vy: -0.12, radius: baseSizes[4] * sizeScale, mass: baseSizes[4] * sizeScale, baseRadius: baseSizes[4],
+        type: 'ice', palette: { hi: '#ffffff', mid: '#a5f3fc', lo: '#0b2a35', accent: '#67e8f9', accentAlt: '#e0f7ff' },
         spinning: 0, spinSpeed: 0.001, seed: 5, texture: null },
     ];
 
@@ -208,7 +208,7 @@ export default function AnimatedBackground() {
     // ===== STARS =====
     type Star = { x: number; y: number; z: number; phase: number; baseAlpha: number; twinkleSpeed: number; hue: 'white' | 'blue' | 'warm' };
     const stars: Star[] = [];
-    for (let i = 0; i < 280; i++) {
+    for (let i = 0; i < starCount; i++) {
       const r = Math.random();
       stars.push({
         x: Math.random() * w, y: Math.random() * h,
@@ -422,6 +422,66 @@ export default function AnimatedBackground() {
       }
     };
 
+    // ===== RESIZE =====
+    // Scale planet positions & radii proportionally so they stay in view
+    let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
+      const oldW = w;
+      const oldH = h;
+      w = canvas.offsetWidth;
+      h = canvas.offsetHeight;
+
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+
+      if (!isInitialized || oldW <= 0 || oldH <= 0) return;
+
+      const sx = w / oldW;
+      const sy = h / oldH;
+      const s = Math.min(sx, sy);
+
+      // Only rescale if the change is meaningful (avoids jitter from mobile URL bar)
+      const isSignificant = Math.abs(sx - 1) > 0.05 || Math.abs(sy - 1) > 0.05;
+
+      if (isSignificant) {
+        // Rescale positions
+        for (const p of planets) {
+          p.x *= sx;
+          p.y *= sy;
+        }
+        // Rescale radii using sizeScale as the base
+        for (const p of planets) {
+          p.radius = p.baseRadius * sizeScale * s;
+          p.mass = p.radius;
+          p.x = Math.max(p.radius, Math.min(w - p.radius, p.x));
+          p.y = Math.max(p.radius, Math.min(h - p.radius, p.y));
+        }
+        for (const star of stars) {
+          star.x *= sx;
+          star.y *= sy;
+        }
+      } else {
+        // Just clamp planets to stay in view
+        for (const p of planets) {
+          p.x = Math.max(p.radius, Math.min(w - p.radius, p.x));
+          p.y = Math.max(p.radius, Math.min(h - p.radius, p.y));
+        }
+      }
+    };
+
+    const handleResize = () => {
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        resize();
+      }, 150);
+    };
+
+    resize();
+    isInitialized = true;
+
     // ===== RENDER =====
     let raf: number;
     let lastTime = performance.now();
@@ -470,13 +530,14 @@ export default function AnimatedBackground() {
       raf = requestAnimationFrame(render);
     };
     raf = requestAnimationFrame(render);
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
       cancelAnimationFrame(raf);
+      if (resizeTimeout) clearTimeout(resizeTimeout);
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', handleResize);
       canvas.removeEventListener('mousedown', onDown);
       canvas.removeEventListener('touchstart', onTouchStart);
       canvas.removeEventListener('touchmove', onTouchMove);
@@ -489,7 +550,7 @@ export default function AnimatedBackground() {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full touch-none pointer-events-auto" />
       <div
         ref={hintRef}
-        className="absolute top-6 left-1/2 -translate-x-1/2 text-white/60 text-xs font-medium tracking-widest uppercase pointer-events-none transition-opacity duration-700 z-10"
+        className="absolute top-20 md:top-6 left-1/2 -translate-x-1/2 text-white/60 text-[10px] md:text-xs font-medium tracking-widest uppercase pointer-events-none transition-opacity duration-700 z-10 px-4 text-center whitespace-nowrap"
       >
         Drag the planets · Throw them anywhere
       </div>

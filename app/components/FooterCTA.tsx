@@ -38,8 +38,8 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(w
 
 const socials = [
   { label: 'Github', href: 'https://github.com/SpaceRaaz-10', Icon: GithubIcon },
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/your-profile', Icon: LinkedinIcon },
-  { label: 'Twitter', href: 'https://twitter.com/your-handle', Icon: TwitterIcon },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/raj-sigdel/', Icon: LinkedinIcon },
+  { label: 'X', href: 'https://x.com/raj_sigdell', Icon: TwitterIcon },
   { label: 'WhatsApp', href: whatsappUrl, Icon: WhatsappIcon },
 ];
 

@@ -168,7 +168,6 @@ export default function Home() {
         line2Gradient="something." 
         subtitle="Currently open to freelance projects and full-time UX/UI opportunities worldwide." 
         email="rajsigdel1000@gmail.com" 
-        emailLabel="Reach me on mail" 
         ctaLabel="Get In Touch →" 
         ctaHref="/contact" 
       />

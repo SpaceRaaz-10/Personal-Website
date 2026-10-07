@@ -70,18 +70,48 @@ const socials = [
   },
 ];
 
+// ⚠️ Web3Forms access key
+const WEB3FORMS_ACCESS_KEY = '6be83a87-2a19-45cd-8ac2-b548de029512';
+
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-    setTimeout(() => {
-      setStatus('sent');
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setStatus('idle'), 3000);
-    }, 1200);
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          subject: `New message from ${formData.name} — Portfolio`,
+          from_name: 'Raj Sigdel Portfolio',
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus('sent');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setStatus('idle'), 3200);
+      } else {
+        setStatus('idle');
+        alert(data.message || 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      setStatus('idle');
+      alert('Network error. Please check your connection and try again.');
+    }
   };
 
   return (
@@ -119,11 +149,77 @@ export default function ContactPage() {
                 <textarea required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder="Tell me about your project..." rows={5} className="w-full bg-transparent border-b-2 border-black/10 focus:border-black outline-none py-3 text-2xl font-light text-black placeholder-black/20 transition-colors duration-300 resize-none" style={{ fontFamily: SF }} />
               </div>
               <div className="pt-4">
-                <button type="submit" disabled={status !== 'idle'} className="bg-black text-white border border-black hover:bg-white hover:text-black transition-colors duration-300 px-10 py-5 rounded-full font-medium text-base cursor-pointer shadow-xl disabled:opacity-60 disabled:cursor-wait" style={{ fontFamily: SF }}>
-                  {status === 'idle' && 'Send Message →'}
-                  {status === 'sending' && 'Sending...'}
-                  {status === 'sent' && '✓ Message Sent'}
-                </button>
+                {/* ---- APPLE-STYLE SUCCESS BUTTON ---- */}
+                <motion.div
+                  animate={status === 'sent' ? { scale: [1, 1.08, 1] } : { scale: 1 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="inline-block"
+                >
+                  <button
+                    type="submit"
+                    disabled={status !== 'idle'}
+                    className={`
+                      relative overflow-hidden
+                      border px-10 py-5 rounded-full font-medium text-base
+                      inline-flex items-center gap-2
+                      transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
+                      disabled:cursor-wait
+                      ${status === 'sent'
+                        ? 'bg-[#34C759] text-white border-[#34C759] shadow-[0_0_60px_rgba(52,199,89,0.55)]'
+                        : status === 'sending'
+                        ? 'bg-black text-white border-black opacity-80 shadow-xl'
+                        : 'bg-black text-white border-black hover:bg-white hover:text-black shadow-xl cursor-pointer'
+                      }
+                    `}
+                    style={{ fontFamily: SF }}
+                  >
+                    {status === 'idle' && (
+                      <span className="inline-flex items-center gap-2">
+                        Send Message
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-300 group-hover:translate-x-1">
+                          <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    )}
+
+                    {status === 'sending' && (
+                      <span className="inline-flex items-center gap-2">
+                        <svg className="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.25" />
+                          <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                        </svg>
+                        Sending...
+                      </span>
+                    )}
+
+                    {status === 'sent' && (
+                      <span className="inline-flex items-center gap-2">
+                        <motion.svg
+                          initial={{ scale: 0, rotate: -90 }}
+                          animate={{ scale: 1, rotate: 0 }}
+                          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="20 6 9 17 4 12" />
+                        </motion.svg>
+                        <motion.span
+                          initial={{ opacity: 0, x: -6 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.3, delay: 0.15 }}
+                        >
+                          Message Sent
+                        </motion.span>
+                      </span>
+                    )}
+                  </button>
+                </motion.div>
               </div>
             </form>
           </motion.div>
