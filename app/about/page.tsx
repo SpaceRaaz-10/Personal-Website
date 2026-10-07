@@ -50,7 +50,7 @@ export default function AboutPage() {
       <section className="px-8 md:px-24 py-16">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }} className="relative">
-            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1000&auto=format&fit=crop" alt="Raj Sigdel" className="w-full h-[60vh] object-cover grayscale contrast-125 rounded-3xl shadow-2xl" />
+            <img src="/whiteshirtimage.png" alt="Raj Sigdel — UX/UI Designer and QA enthusiast" className="rounded-3xl shadow-xl" />
             <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md border border-black/5 px-5 py-3 rounded-full flex items-center gap-3 shadow-xl">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <span className="text-sm font-semibold text-black" style={{ fontFamily: SF }}>Available for work</span>
