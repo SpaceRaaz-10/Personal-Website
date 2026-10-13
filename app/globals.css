@@ -2,47 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== LENIS ===== */
-html.lenis, html.lenis body {
+/* ===== LENIS SMOOTH SCROLL ===== */
+html.lenis,
+html.lenis body {
   height: auto;
 }
+
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
+
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
+
 .lenis.lenis-stopped {
   overflow: hidden;
 }
-.lenis.lenis-scrolling iframe {
+
+.lenis.lenis-smooth iframe {
   pointer-events: none;
 }
 
+/* ===== RESET ===== */
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
-html, body {
+html,
+body {
   max-width: 100vw;
   overflow-x: clip;
-  background: #FFFFFF;
+  background: #ffffff;
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: -0.01em;
-
-  /* ===== MOBILE FIXES ===== */
-  /* Prevents iOS from auto-enlarging text in landscape */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-
-  /* Removes the blue tap-flash on iOS/Android (very un-iOS) */
   -webkit-tap-highlight-color: transparent;
-
-  /* Smooth momentum scrolling on iOS */
   -webkit-overflow-scrolling: touch;
 }
 

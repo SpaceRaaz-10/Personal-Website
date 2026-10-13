@@ -3,76 +3,75 @@ import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useMotionValueEvent, useMotionValue, animate } from 'framer-motion';
 import Navbar from '../components/Navbar';
-import StaggeredText from '../components/StaggeredText';
 import FooterCTA from '../components/FooterCTA';
 
 const SYNE = "'Syne', sans-serif";
 const SF = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif";
 
-// --- PROJECT DATA ---
+// ============================================================
+// PROJECTS — synced with /work/[slug]/page.tsx
+// ============================================================
 const projects = [
-  { 
-    id: 1, 
-    title: 'Trekking Website', 
-    category: 'Website Design', 
-    tools: ['Figma', 'Webflow'], 
-    year: '2024', 
-    description: 'A clean, user-friendly trekking platform focused on clear navigation, immersive visuals, and effortless trip discovery.',
-    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=1600&auto=format&fit=crop' 
+  {
+    id: 1,
+    slug: 'ott-platform-app',
+    title: 'OTT Platform App',
+    category: 'Mobile App',
+    tools: ['Figma', 'Illustrator'],
+    year: '2024',
+    description: 'A modern OTT streaming app redesign focused on content discovery, personalization, and effortless browsing across devices.',
+    image: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?q=80&w=2000&auto=format&fit=crop',
   },
-  { 
-    id: 2, 
-    title: 'Real Estate Dashboard', 
-    category: 'Backend Dashboard', 
-    tools: ['Figma', 'React'], 
-    year: '2024', 
+  {
+    id: 2,
+    slug: 'real-estate-dashboard',
+    title: 'Real Estate Dashboard',
+    category: 'Backend Dashboard',
+    tools: ['Figma', 'React'],
+    year: '2024',
     description: 'A real estate admin dashboard built for effortless property management, data visualization, and seamless user workflow.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop' 
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop',
   },
-  { 
-    id: 3, 
-    title: 'Mountain Information', 
-    category: 'Website Design', 
-    tools: ['Figma', 'Webflow'], 
-    year: '2024', 
+  {
+    id: 3,
+    slug: 'mountain-information',
+    title: 'Mountain Information',
+    category: 'Website Design',
+    tools: ['Figma', 'Webflow'],
+    year: '2024',
     description: 'A modern platform highlighting Nepal mountains with rich visuals, interactive maps, and comprehensive trail information.',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600&auto=format&fit=crop' 
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2000&auto=format&fit=crop',
   },
-  { 
-    id: 4, 
-    title: 'Juicy Smoothie', 
-    category: 'Website Design', 
-    tools: ['Figma', 'Illustrator'], 
-    year: '2023', 
-    description: 'A vibrant, appetite-driven website for a smoothie brand with bold type, product-first visuals, and engaging scroll animations.',
-    image: 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?q=80&w=1600&auto=format&fit=crop' 
-  },
-  { 
-    id: 5, 
-    title: 'Gym Tracker App', 
-    category: 'Mobile App', 
-    tools: ['Figma', 'Illustrator'], 
-    year: '2023', 
+  {
+    id: 4,
+    slug: 'gym-tracker-app',
+    title: 'Fitness Tracker App',
+    category: 'Mobile App',
+    tools: ['Figma', 'Illustrator'],
+    year: '2023',
     description: 'A sleek fitness tracking application designed to keep users motivated with intuitive progress charts and workout logging.',
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600&auto=format&fit=crop' 
+    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2000&auto=format&fit=crop',
   },
-  { 
-    id: 6, 
-    title: 'Stripe Redesign', 
-    category: 'Business Website', 
-    tools: ['Figma', 'Webflow'], 
-    year: '2023', 
-    description: 'A conceptual redesign of Stripe focusing on simplifying complex financial data into a beautiful, digestible interface.',
-    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=1600&auto=format&fit=crop' 
+  {
+    id: 5,
+    slug: 'trekking-website',
+    title: 'Trekking Website',
+    category: 'Website Design',
+    tools: ['Figma', 'Webflow'],
+    year: '2024',
+    description: 'A clean, user-friendly trekking platform focused on clear navigation, immersive visuals, and effortless trip discovery.',
+    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=2000&auto=format&fit=crop',
   },
 ];
 
-// --- REAL BRAND SVG TOOL ICONS ---
+// ============================================================
+// TOOL ICONS
+// ============================================================
 const ToolIcon = ({ name }: { name: string }) => {
   switch (name) {
     case 'Figma':
       return (
-        <svg viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+        <svg viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
           <path d="M19 28.5C19 25.46 21.46 23 24.5 23H38V33.5C38 36.54 35.54 39 32.5 39H19V28.5Z" fill="#1ABCFE"/>
           <path d="M0 47C0 43.96 2.46 41.5 5.5 41.5H19V52.5C19 55.54 16.54 58 13.5 58H5.5C2.46 58 0 55.54 0 52.5V47Z" fill="#0ACF83"/>
           <path d="M0 28.5C0 25.46 2.46 23 5.5 23H19V33.5H5.5C2.46 33.5 0 31.04 0 28.5Z" fill="#FF7262"/>
@@ -82,7 +81,7 @@ const ToolIcon = ({ name }: { name: string }) => {
       );
     case 'React':
       return (
-        <svg viewBox="-10.5 -9.45 21 18.9" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+        <svg viewBox="-10.5 -9.45 21 18.9" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
           <circle cx="0" cy="0" r="2" fill="#61DAFB"></circle>
           <g stroke="#61DAFB" strokeWidth="1" fill="none">
             <ellipse rx="10" ry="4.5"></ellipse>
@@ -93,160 +92,178 @@ const ToolIcon = ({ name }: { name: string }) => {
       );
     case 'Webflow':
       return (
-        <svg viewBox="0 0 24 24" fill="#146EF5" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+        <svg viewBox="0 0 24 24" fill="#146EF5" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
           <path d="M24 4.5l-7.5 15h-9L12 10.5l-4.5 9H0L7.5 4.5h9L12 13.5l4.5-9H24z"/>
         </svg>
       );
     case 'Illustrator':
       return (
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
           <rect x="1" y="1" width="22" height="22" rx="4" fill="#330000" stroke="#FF9A00" strokeWidth="1.5"/>
           <text x="12" y="16" fontSize="11" fontWeight="bold" fill="#FF9A00" textAnchor="middle" fontFamily="sans-serif">Ai</text>
         </svg>
       );
     default:
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 16v-4M12 8h.01" />
-        </svg>
-      );
+      return null;
   }
 };
 
-// --- INDIVIDUAL SLIDE COMPONENT ---
-const ProjectSlide = ({ project, index }: { project: any, index: number }) => {
-  const formattedIndex = String(index + 1).padStart(2, '0');
-  
-  // Helper to split title and add gradient to the last word
-  const renderTitle = (title: string) => {
-    const words = title.split(' ');
-    const lastWord = words.pop(); 
-    const firstPart = words.join(' '); 
-    
-    return (
-      <h2 
-        // ⚠️ FIXED: Using clamp() for responsive font sizing to prevent word breaks
-        className="text-[clamp(2.5rem,4vw,4.5rem)] font-extrabold text-black leading-[1.05] tracking-tight" 
-        style={{ fontFamily: SYNE }}
-      >
-        {firstPart && <span>{firstPart} </span>}
-        <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">
-          {lastWord}
-        </span>
-      </h2>
-    );
-  };
-  
+// ============================================================
+// FULL-SCREEN SLIDE
+// ============================================================
+const ProjectSlide = ({ project, index, total }: { project: any; index: number; total: number }) => {
+  const number = String(index + 1).padStart(2, '0');
+  const totalStr = String(total).padStart(2, '0');
+
+  const words = project.title.split(' ');
+  const lastWord = words.pop();
+  const firstPart = words.join(' ');
+
   return (
-    <div className="w-screen h-screen flex-shrink-0 flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 select-none">
-      {/* 
-        ⚠️ FIXED: Changed grid to 1.1fr for text and 0.9fr for image.
-        This gives long words like "Information" enough room to breathe.
-      */}
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-20 items-center h-full max-h-[75vh]">
-        
-        {/* LEFT: TEXT CONTENT */}
-        <div className="order-2 lg:order-1 flex flex-col justify-center h-full space-y-8 min-w-0 pr-4">
+    <div className="relative w-screen h-screen flex-shrink-0 overflow-hidden">
+      {/* Background image */}
+      <img
+        src={project.image}
+        alt={project.title}
+        draggable={false}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+
+      {/* Gradient scrim — balanced for centered text */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20 md:from-black/75 md:via-black/40 md:to-black/10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
+
+      {/* Top-left info */}
+      <div className="absolute top-24 md:top-28 left-5 md:left-12 lg:left-24 flex items-center gap-3 md:gap-5 z-10">
+        <span className="text-white/70 text-[10px] md:text-xs tracking-[0.3em] uppercase font-medium" style={{ fontFamily: SF }}>
+          {number} / {totalStr}
+        </span>
+        <span className="w-6 md:w-10 h-[1px] bg-white/30" />
+        <span className="text-white/70 text-[10px] md:text-xs tracking-[0.3em] uppercase font-medium" style={{ fontFamily: SF }}>
+          {project.category}
+        </span>
+      </div>
+
+      {/* Top-right year */}
+      <div className="absolute top-24 md:top-28 right-5 md:right-12 lg:right-24 z-10">
+        <span className="text-white/70 text-[10px] md:text-xs tracking-[0.3em] uppercase font-medium" style={{ fontFamily: SF }}>
+          {project.year}
+        </span>
+      </div>
+
+      {/* FULLY CENTERED CONTENT */}
+      <div className="absolute inset-0 flex items-center justify-center z-10 px-5 md:px-12">
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            gap: '2rem',
+          }}
+          className="w-full max-w-3xl"
+        >
           
-          {/* Project Number & Meta */}
-          <div className="flex items-center gap-6">
-            <span className="text-4xl font-light text-black/20" style={{ fontFamily: SF }}>
-              {formattedIndex}
+          {/* Title */}
+          <h2
+            className="text-white text-[clamp(2rem,5.5vw,4.75rem)] font-extrabold leading-[1.05] tracking-tight"
+            style={{ fontFamily: SYNE, textAlign: 'center' }}
+          >
+            {firstPart && <span>{firstPart} </span>}
+            <span className="inline-block whitespace-nowrap bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              {lastWord}
             </span>
-            <div className="flex items-center gap-4 text-black/40 text-xs tracking-[0.2em] uppercase" style={{ fontFamily: SF }}>
-              <span>{project.year}</span>
-              <span className="w-1 h-1 rounded-full bg-black/20"></span>
-              <span>{project.category}</span>
-            </div>
-          </div>
-          
-          {/* Title with Gradient on Last Word */}
-          {renderTitle(project.title)}
-          
+          </h2>
+
           {/* Description */}
-          <p className="text-base md:text-lg text-black/60 font-light max-w-md leading-relaxed" style={{ fontFamily: SF }}>
+          <p
+            className="text-white/80 text-base md:text-lg lg:text-xl font-light leading-relaxed max-w-xl"
+            style={{ fontFamily: SF, textAlign: 'center' }}
+          >
             {project.description}
           </p>
-          
-          {/* Tools with Official SVGs */}
-          <div className="pt-4">
-            <span className="text-xs text-black/40 uppercase tracking-[0.2em] block mb-4" style={{ fontFamily: SF }}>Tools Used</span>
-            <div className="flex gap-4">
+
+          {/* Tools */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-white/50 block mb-3 md:mb-4 font-medium" style={{ fontFamily: SF }}>
+              Tools Used
+            </span>
+            <div className="flex gap-3 justify-center">
               {project.tools.map((tool: string) => (
-                <div key={tool} className="w-14 h-14 rounded-2xl bg-white shadow-sm border border-black/5 flex items-center justify-center hover:scale-110 hover:shadow-md transition-all duration-300">
+                <div
+                  key={tool}
+                  className="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-white/95 backdrop-blur-md shadow-lg flex items-center justify-center"
+                >
                   <ToolIcon name={tool} />
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Apple-style CTA Button */}
-          <div className="pt-6">
-            <Link 
-              href={`/work/${project.id}`} 
-              className="inline-flex items-center gap-2 bg-black text-white px-8 py-4 rounded-full text-sm font-medium hover:bg-black/80 hover:gap-3 transition-all duration-300" 
+          {/* CTA */}
+          <div style={{ paddingTop: '0.5rem' }}>
+            <Link
+              href={`/work/${project.slug}`}
+              className="group/cta inline-flex items-center gap-3 bg-white text-black px-7 py-3.5 md:px-9 md:py-4 rounded-full text-sm md:text-base font-medium hover:bg-white/90 transition-all duration-300"
               style={{ fontFamily: SF }}
             >
               View Project
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="transition-transform duration-500 group-hover/cta:translate-x-1"
+              >
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </Link>
           </div>
-        </div>
-        
-        {/* RIGHT: IMAGE (Fixed height to prevent layout shifts) */}
-        <div className="order-1 lg:order-2 relative h-full w-full rounded-[2rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.15)] group bg-gray-100">
-          <img 
-            src={project.image} 
-            alt={project.title} 
-            className="w-full h-full object-cover transition-transform duration-[1500ms] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.05]" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-        </div>
 
+        </div>
+      </div>
+
+      {/* Bottom-left hint */}
+      <div className="absolute bottom-8 md:bottom-12 left-5 md:left-12 lg:left-24 z-10 flex items-center gap-3">
+        <span className="text-white/50 text-[10px] md:text-xs tracking-[0.3em] uppercase font-medium" style={{ fontFamily: SF }}>
+          Scroll to explore
+        </span>
       </div>
     </div>
   );
 };
 
-// --- MAIN PAGE COMPONENT ---
+// ============================================================
+// MAIN PAGE
+// ============================================================
 export default function WorkPage() {
   const targetRef = useRef<HTMLDivElement>(null);
-  
-  // 1. Track the vertical scroll of the slider section
   const { scrollYProgress } = useScroll({ target: targetRef });
-  
-  // 2. State to hold the currently active project index
   const [activeIndex, setActiveIndex] = useState(0);
-  
-  // 3. Motion value for the horizontal track position
   const x = useMotionValue(0);
 
-  // 4. Listen to scroll changes and determine which project index is active
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const totalSlides = projects.length;
-    const index = Math.round(latest * (totalSlides - 1));
-    if (index !== activeIndex) {
-      setActiveIndex(index);
-    }
+  // Snap to each project as user scrolls
+  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+    const index = Math.round(latest * (projects.length - 1));
+    if (index !== activeIndex) setActiveIndex(index);
   });
 
-  // 5. When the active index changes, animate the x position smoothly using a spring
+  // Smooth spring animation to slide to active project
   useEffect(() => {
     animate(x, -activeIndex * window.innerWidth, {
-      type: "spring",
+      type: 'spring',
       stiffness: 100,
       damping: 30,
-      restDelta: 0.001
+      restDelta: 0.001,
     });
   }, [activeIndex, x]);
 
-  // Handle window resize to keep the slider perfectly aligned
+  // Recalculate on resize
   useEffect(() => {
     const handleResize = () => {
-      animate(x, -activeIndex * window.innerWidth, { type: "spring", stiffness: 100, damping: 30 });
+      animate(x, -activeIndex * window.innerWidth, {
+        type: 'spring', stiffness: 100, damping: 30,
+      });
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -255,74 +272,84 @@ export default function WorkPage() {
   const totalScrollHeight = projects.length * 120;
 
   return (
-    <main data-nav-theme="light" className="min-h-screen bg-[#F5F5F7] text-black" style={{ fontFamily: SF }}>
+    <main
+      data-nav-theme="dark"
+      className="min-h-screen bg-black text-white"
+      style={{ fontFamily: SF, overflowX: 'clip' }}
+    >
       <Navbar />
 
-      {/* HEADER SECTION */}
-      <section className="pt-48 pb-16 px-8 md:px-24 bg-[#F5F5F7] relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-6xl md:text-8xl lg:text-[7.5rem] font-extrabold leading-[0.9] text-black" style={{ fontFamily: SYNE, letterSpacing: '-0.03em' }}>
-            <StaggeredText text="Selected" />
-            <br />
-            <StaggeredText text="Work." gradientWords={[0]} startIndex={1} />
-          </h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ delay: 0.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }} 
-            className="mt-8 text-xl md:text-2xl font-light text-black/60 max-w-2xl" 
-            style={{ fontFamily: SF }}
-          >
-            A curated collection of projects showcasing design thinking, creativity, and attention to detail. Scroll down to slide through.
-          </motion.p>
-        </div>
-      </section>
-
-      {/* HORIZONTAL SLIDER SECTION */}
-      <section ref={targetRef} style={{ height: `${totalScrollHeight}vh` }} className="relative bg-[#F5F5F7]">
-        
-        {/* Sticky container that stays in view while scrolling */}
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
+      {/* ============================================================
+          HORIZONTAL SLIDER — FULL SCREEN SLIDES
+      ============================================================ */}
+      <section
+        ref={targetRef}
+        style={{ height: `${totalScrollHeight}vh` }}
+        className="relative bg-black"
+      >
+        <div className="sticky top-0 h-screen w-full overflow-hidden">
           
           {/* The Moving Track */}
-          <motion.div 
-            style={{ x, willChange: 'transform' }} 
+          <motion.div
+            style={{ x, willChange: 'transform' }}
             className="flex h-full w-max"
           >
             {projects.map((project, i) => (
-              <ProjectSlide key={project.id} project={project} index={i} />
+              <ProjectSlide
+                key={project.id}
+                project={project}
+                index={i}
+                total={projects.length}
+              />
             ))}
           </motion.div>
 
-          {/* Progress Bar & Instructions (Bottom) */}
-          <div className="absolute bottom-12 left-0 right-0 px-8 md:px-24 z-50 pointer-events-none">
-            <div className="max-w-7xl mx-auto w-full">
-              <div className="w-full h-[2px] bg-black/10 relative mb-4">
-                <motion.div 
-                  className="absolute top-0 left-0 h-full bg-black origin-left"
+          {/* ============================================================
+              PROGRESS BAR — Bottom
+          ============================================================ */}
+          <div className="absolute bottom-8 md:bottom-12 right-5 md:right-12 lg:right-24 z-20 pointer-events-none">
+            <div className="flex items-center gap-4 md:gap-6">
+              {/* Number */}
+              <span
+                className="text-white text-base md:text-lg font-extrabold tabular-nums"
+                style={{ fontFamily: SYNE }}
+              >
+                {String(activeIndex + 1).padStart(2, '0')}
+              </span>
+
+              {/* Progress bar */}
+              <div className="w-24 md:w-40 h-[2px] bg-white/20 relative overflow-hidden rounded-full">
+                <motion.div
+                  className="absolute top-0 left-0 h-full bg-white origin-left"
                   animate={{ scaleX: (activeIndex + 1) / projects.length }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
                 />
               </div>
-              <div className="flex justify-between text-xs tracking-[0.2em] text-black/40 uppercase" style={{ fontFamily: SF }}>
-                <span>Scroll to explore</span>
-                <span>{activeIndex + 1} / {projects.length}</span>
-              </div>
+
+              {/* Total */}
+              <span
+                className="text-white/40 text-xs md:text-sm tracking-widest tabular-nums"
+                style={{ fontFamily: SF }}
+              >
+                {String(projects.length).padStart(2, '0')}
+              </span>
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* FOOTER */}
-      <FooterCTA 
-        line1="Like what" 
-        line2="you see?" 
-        line2Gradient="see?" 
-        subtitle="Every project starts with a conversation. Let's talk about yours." 
-        email="rajsigdel1000@gmail.com" 
-        ctaLabel="Let's work together →" 
-        ctaHref="/contact" 
+      {/* ============================================================
+          FOOTER
+      ============================================================ */}
+      <FooterCTA
+        line1="Like what"
+        line2="you see?"
+        line2Gradient="see?"
+        subtitle="Every project starts with a conversation. Let's talk about yours."
+        email="rajsigdel1000@gmail.com"
+        ctaLabel="Let's work together →"
+        ctaHref="/contact"
       />
     </main>
   );

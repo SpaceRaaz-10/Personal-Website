@@ -18,24 +18,50 @@ const stats = [
 ];
 
 const skills = [
-  { category: 'Design', tools: 'Figma, Adobe XD, Photoshop, Illustrator' },
+  { category: 'UI/UX Design', tools: 'User Research, Wireframing, Prototyping, Micro-Animation, Interaction Design, HTML/CSS Integration' },
+  { category: 'Responsive Design', tools: 'Mobile-first design, cross-platform compatibility, fluid layouts' },
+  { category: 'Design Tools', tools: 'Figma, Adobe Photoshop, Illustrator, InDesign, Canva' },
+  { category: 'Other Skills', tools: 'Design Systems, User Testing, Information Architecture, Usability Testing, High-Fidelity Mockups, Git' },
+  { category: 'Frontend', tools: 'HTML, CSS, basic JavaScript' },
   { category: 'No-Code', tools: 'Webflow, Framer' },
-  { category: 'Development', tools: 'HTML, CSS, Basic React' },
-  { category: 'UX', tools: 'Research, Wireframing, Prototyping' },
 ];
 
 const experience = [
-  { year: '2024 - Present', role: 'UX/UI Designer (Freelance)', company: 'Independent Projects' },
+  { year: '2024 - Present', role: 'UX/UI Designer (Fresher)', company: 'Personal Projects' },
   { year: '2024 - Present', role: 'QA Enthusiast', company: 'Self-taught · Manual Testing' },
   { year: '2023 - 2024', role: 'Graphic Designer', company: 'Blaze Mountains Travels' },
   { year: '2023', role: 'Started UX/UI Journey', company: 'Self-learning' },
 ];
 
+const education = [
+  {
+    year: '2024 - 2028',
+    degree: 'Bachelor of Computer Applications (BCA)',
+    school: 'Asian School of Management and Technology, Nepal',
+    status: 'Current',
+  },
+  {
+    year: 'Completed 2023',
+    degree: 'High School Diploma — Major: Computer Science',
+    school: 'NCCS Secondary School, Nepal',
+    status: 'Completed',
+  },
+];
+
+const certifications = [
+  {
+    title: 'Graphic Design and Web Design',
+    issuer: 'Animax Animation Academy, Lalitpur',
+    year: '',
+  },
+];
+
 export default function AboutPage() {
   return (
     <main data-nav-theme="light" className="min-h-screen bg-white text-black" style={{ fontFamily: SF }}>
-                  <Navbar />
+      <Navbar />
 
+      {/* HERO */}
       <section className="pt-48 pb-16 px-8 md:px-24">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs font-bold tracking-widest text-black/40 uppercase mb-6" style={{ fontFamily: SF }}>About Me</p>
@@ -47,6 +73,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* BIO */}
       <section className="px-8 md:px-24 py-16">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }} className="relative">
@@ -80,6 +107,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* STATS */}
       <section className="px-8 md:px-24 py-24 border-t border-black/10 mt-16">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           {stats.map((stat, i) => (
@@ -93,6 +121,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* SKILLS */}
       <section className="px-8 md:px-24 py-24 bg-[#F5F5F7]">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-5xl md:text-7xl font-extrabold mb-16" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>
@@ -109,6 +138,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* EXPERIENCE */}
       <section className="px-8 md:px-24 py-32 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-5xl md:text-7xl font-extrabold mb-16" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>
@@ -120,6 +150,67 @@ export default function AboutPage() {
                 <div className="md:col-span-3 text-sm font-bold tracking-widest text-black/40 uppercase" style={{ fontFamily: SF }}>{exp.year}</div>
                 <div className="md:col-span-5 text-2xl font-bold group-hover:translate-x-2 transition-transform duration-300" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>{exp.role}</div>
                 <div className="md:col-span-4 text-black/60 font-light" style={{ fontFamily: SF }}>{exp.company}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* EDUCATION */}
+      <section className="px-8 md:px-24 py-32 bg-[#F5F5F7]">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-5xl md:text-7xl font-extrabold mb-16" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>
+            <span className="gradient-text">Education.</span>
+          </h2>
+          <div className="space-y-2">
+            {education.map((edu, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }} className="grid grid-cols-1 md:grid-cols-12 gap-4 py-8 border-b border-black/10 items-center group hover:bg-white transition-colors px-4 -mx-4 rounded-lg">
+                <div className="md:col-span-3 text-sm font-bold tracking-widest text-black/40 uppercase" style={{ fontFamily: SF }}>{edu.year}</div>
+                <div className="md:col-span-6">
+                  <div className="text-2xl font-bold mb-1 group-hover:translate-x-2 transition-transform duration-300" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>{edu.degree}</div>
+                  <div className="text-black/60 font-light" style={{ fontFamily: SF }}>{edu.school}</div>
+                </div>
+                <div className="md:col-span-3 md:text-right">
+                  <span className={`inline-block text-xs font-bold tracking-widest uppercase px-3 py-1.5 rounded-full ${edu.status === 'Current' ? 'bg-green-100 text-green-700' : 'bg-black/10 text-black/60'}`} style={{ fontFamily: SF }}>
+                    {edu.status}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CERTIFICATIONS */}
+      <section className="px-8 md:px-24 py-32 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-5xl md:text-7xl font-extrabold mb-16" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>
+            <span className="gradient-text">Certifications.</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {certifications.map((cert, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="bg-[#F5F5F7] rounded-3xl p-8 md:p-10 border border-black/[0.06] flex gap-6 items-start"
+              >
+                <div className="shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center shadow-lg">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold mb-2" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>
+                    {cert.title}
+                  </h3>
+                  <p className="text-black/60 font-light" style={{ fontFamily: SF }}>
+                    {cert.issuer}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
