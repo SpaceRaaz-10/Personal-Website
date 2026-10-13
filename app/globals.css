@@ -1,4 +1,23 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== LENIS ===== */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
 
 * {
   box-sizing: border-box;
@@ -76,7 +95,6 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
   color: transparent;
 
   animation: flowGradient 8s linear infinite;
-  will-change: background-position;
 }
 
 @keyframes flowGradient {
@@ -104,52 +122,5 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  animation: flowGradient 8s linear infinite;
-}
-
-/* ==========================================================
-   MOBILE-ONLY: safe areas for iPhone notch + home indicator
-   ========================================================== */
-@supports (padding: env(safe-area-inset-top)) {
-  body {
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-  }
-}
-
-/* ==========================================================
-   ACCESSIBILITY: respect users who disabled animations
-   ========================================================== */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* ==========================================================
-   MOBILE PERFORMANCE: pause gradient animation off-screen
-   Frees up CPU when gradient text isn't visible
-   ========================================================== */
-@media (max-width: 768px) {
-  .gradient-text,
-  .gradient-text-on-dark {
-    /* Slower on mobile — saves battery, still looks alive */
-    animation-duration: 12s;
-  }
-}
-
-/* ==========================================================
-   TOUCH: minimum tap targets (Apple HIG = 44x44px)
-   ========================================================== */
-@media (pointer: coarse) {
-  button,
-  a {
-    /* Ensures all interactive elements are easy to tap */
-    min-height: 24px;
-  }
+  animation: flowGradient 8s
 }

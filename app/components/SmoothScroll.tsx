@@ -19,8 +19,8 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
 
     // ===== DESKTOP LENIS =====
     const lenis = new Lenis({
-      lerp: 0.05,
-      wheelMultiplier: 1.2,
+      lerp: 0.1,
+      wheelMultiplier: 1,
       // Prevent Lenis from hijacking touch events if it ever gets enabled on mobile
       smoothWheel: true,
       syncTouch: false,

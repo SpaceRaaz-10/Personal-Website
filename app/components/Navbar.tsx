@@ -62,7 +62,7 @@ export default function Navbar() {
 
       {/* Desktop "Let's Talk" button */}
       <div className="hidden md:block fixed top-0 right-0 p-6 md:p-8 z-[51] pointer-events-auto">
-        <SpaceButton>Let's Talk</SpaceButton>
+        <SpaceButton>Let&apos;s Talk</SpaceButton>
       </div>
 
       {/* Mobile top-right actions: Let's Talk (compact) + Hamburger */}
@@ -81,7 +81,7 @@ export default function Navbar() {
                 className="inline-flex items-center bg-white text-black border border-white px-4 py-2 rounded-full text-[11px] font-medium tracking-wide"
                 style={{ fontFamily: SF }}
               >
-                Let's Talk
+                Let&apos;s Talk
               </Link>
             </motion.div>
           )}

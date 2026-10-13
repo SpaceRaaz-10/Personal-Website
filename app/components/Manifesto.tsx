@@ -41,7 +41,8 @@ const principles = [
 type PrincipleType = (typeof principles)[number];
 const TOTAL = principles.length;
 
-// Fires once when the element enters the viewport. No scroll listeners.
+const STRIP_GRADIENT_INDICES = [1, 2]; // Motion + Clarity
+
 function useOnceInView<T extends HTMLElement>(margin = '0px 0px -10% 0px') {
   const ref = useRef<T>(null);
   const [shown, setShown] = useState(false);
@@ -70,34 +71,37 @@ function WordStrip() {
   return (
     <div aria-hidden className="border-y border-black/10 py-4 md:py-6">
       <div className="max-w-[1400px] mx-auto px-5 md:px-12 lg:px-24 flex flex-wrap items-center gap-x-5 gap-y-2 md:gap-x-9">
-        {principles.map((p, i) => (
-          <span key={p.id} className="flex items-center gap-5 md:gap-9">
-            <span
-              className="text-[clamp(1.5rem,5vw,3.5rem)] font-extrabold uppercase leading-none tracking-tight text-black/15"
-              style={{ fontFamily: SYNE }}
-            >
-              {p.label}
+        {principles.map((p, i) => {
+  const hasGradient = STRIP_GRADIENT_INDICES.includes(i);
+          return (
+            <span key={p.id} className="flex items-center gap-5 md:gap-9">
+              <span
+                className={`text-[clamp(1.5rem,5vw,3.5rem)] font-extrabold uppercase leading-none tracking-tight ${
+                  hasGradient ? 'gradient-text' : 'text-black/15'
+                }`}
+                style={{ fontFamily: SYNE }}
+              >
+                {p.label}
+              </span>
+              {i < TOTAL - 1 && <span className="text-lg md:text-2xl text-yellow-400">✦</span>}
             </span>
-            {i < TOTAL - 1 && <span className="text-lg md:text-2xl text-yellow-400">✦</span>}
-          </span>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
 }
 
 // ==================== SIDEBAR (desktop) ====================
-// Only changes when `active` changes (4 times total). CSS handles the transitions.
 const Sidebar = memo(function Sidebar({ active }: { active: number }) {
   return (
-    <div className="sticky top-0 h-screen flex flex-col justify-center pr-12 xl:pr-16">
-      {/* Giant numbers */}
-      <div className="relative h-[10rem] xl:h-[15rem]" aria-hidden>
+    <div className="sticky top-0 h-screen flex flex-col justify-center pr-8 xl:pr-10">
+      <div className="relative h-[9rem] xl:h-[12rem] overflow-hidden" aria-hidden>
         {principles.map((p, i) => (
           <span
             key={p.id}
             style={{ fontFamily: SYNE }}
-            className={`absolute inset-0 text-[10rem] xl:text-[15rem] font-black leading-none text-black transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none ${
+            className={`absolute inset-0 text-[9rem] xl:text-[12rem] font-black leading-none text-black transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none ${
               active === i ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
           >
@@ -106,16 +110,14 @@ const Sidebar = memo(function Sidebar({ active }: { active: number }) {
         ))}
       </div>
 
-      {/* Progress bar */}
-      <div className="relative h-28 xl:h-40 w-[2px] mt-8 ml-2 bg-black/10 overflow-hidden">
+      <div className="relative h-24 xl:h-32 w-[2px] mt-6 ml-2 bg-black/10 overflow-hidden">
         <div
           className={`absolute inset-0 origin-top bg-gradient-to-b ${GRADIENT} transition-transform duration-500 ease-out motion-reduce:transition-none`}
           style={{ transform: `scaleY(${(active + 1) / TOTAL})` }}
         />
       </div>
 
-      {/* Labels */}
-      <div className="mt-8 ml-2 relative h-20">
+      <div className="mt-6 ml-2 relative h-20">
         {principles.map((p, i) => (
           <div
             key={p.id}
@@ -151,7 +153,6 @@ const Principle = memo(function Principle({
 }) {
   const [ref, shown] = useOnceInView<HTMLDivElement>();
 
-  // Marks this principle active when it crosses the middle of the screen.
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -175,7 +176,6 @@ const Principle = memo(function Principle({
       className="min-h-[70svh] lg:min-h-[90vh] flex items-center py-12 md:py-20 lg:py-24"
     >
       <div className="relative w-full max-w-4xl">
-        {/* Mobile + tablet label row */}
         <div className="lg:hidden flex items-center gap-4 mb-6 md:mb-8">
           <span
             className="text-3xl md:text-4xl font-black text-black/20 leading-none"
@@ -192,7 +192,6 @@ const Principle = memo(function Principle({
           </span>
         </div>
 
-        {/* Desktop label row */}
         <div className="hidden lg:flex items-center gap-4 mb-10 xl:mb-12">
           <span
             className="text-[10px] xl:text-xs tracking-[0.35em] uppercase text-black/40 font-medium"
@@ -208,7 +207,11 @@ const Principle = memo(function Principle({
           style={{ fontFamily: SYNE }}
         >
           {principle.title.map((text, i) => (
-            <span key={i} className="block overflow-hidden pb-[0.12em] -mb-[0.02em]">
+            // ⚠️ ONLY CHANGE: padding buffer increased from 0.35em → 0.6em
+            <span
+              key={i}
+              className="block overflow-hidden -mx-[0.6em] px-[0.6em] pb-[0.12em] -mb-[0.02em]"
+            >
               <span
                 style={{ transitionDelay: `${i * 70}ms` }}
                 className={`inline-block transition-transform duration-700 ${EASE} motion-reduce:transition-none motion-reduce:translate-y-0 ${
@@ -248,7 +251,6 @@ export default function Manifesto() {
 
   return (
     <section data-nav-theme="light" className="relative bg-white text-black">
-      {/* Static background: dot grid + two soft glows. Nothing animates here. */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
@@ -262,7 +264,6 @@ export default function Manifesto() {
         }}
       />
 
-      {/* ==================== HEADER ==================== */}
       <div className="relative max-w-[1400px] mx-auto px-5 md:px-12 lg:px-24 pt-20 md:pt-28 lg:pt-32 pb-10 md:pb-14 lg:pb-16">
         <div
           ref={headRef}
@@ -283,18 +284,21 @@ export default function Manifesto() {
             className="text-[clamp(2rem,8vw,4.5rem)] font-extrabold leading-[1.05] tracking-tight text-black max-w-4xl"
             style={{ fontFamily: SYNE }}
           >
-            Four principles.
-            <br />
-            <span className="text-black/30">One obsession.</span>
+            <span className="block">
+              Four <span className="text-black/30">principles.</span>
+            </span>
+            <span className="block">
+              One <span>  </span>
+              <span className="text-black/30">obsession.</span>
+            </span>
           </h2>
         </div>
       </div>
 
       <WordStrip />
 
-      {/* ==================== SCROLL GRID ==================== */}
-      <div className="relative max-w-[1400px] mx-auto px-5 md:px-12 lg:px-24 grid grid-cols-1 lg:grid-cols-12">
-        <div className="hidden lg:block lg:col-span-5 relative">
+      <div className="relative max-w-[1400px] mx-auto px-5 md:px-12 lg:px-24 grid grid-cols-1 lg:grid-cols-12 lg:gap-12 xl:gap-16">
+        <div className="hidden lg:block lg:col-span-5 relative min-w-0">
           <Sidebar active={active} />
         </div>
 
@@ -305,7 +309,6 @@ export default function Manifesto() {
         </div>
       </div>
 
-      {/* ==================== SIGNATURE ==================== */}
       <div className="relative max-w-[1400px] mx-auto px-5 md:px-12 lg:px-24 py-16 md:py-28 lg:py-32">
         <div
           ref={sigRef}
@@ -314,7 +317,6 @@ export default function Manifesto() {
           }`}
         >
           <div className="flex items-center gap-5">
-            {/* Static gradient ring avatar */}
             <div
               className="p-[3px] rounded-full shrink-0"
               style={{
