@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, memo } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useMotionValueEvent, useMotionValue, animate } from 'framer-motion';
 import Navbar from '../components/Navbar';
@@ -20,7 +20,7 @@ const projects = [
     tools: ['Figma', 'Illustrator'],
     year: '2024',
     description: 'A modern OTT streaming app redesign focused on content discovery, personalization, and effortless browsing across devices.',
-    image: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?q=80&w=1600&auto=format&fit=crop',
   },
   {
     id: 2,
@@ -30,7 +30,7 @@ const projects = [
     tools: ['Figma', 'React'],
     year: '2024',
     description: 'A real estate admin dashboard built for effortless property management, data visualization, and seamless user workflow.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop',
   },
   {
     id: 3,
@@ -40,7 +40,7 @@ const projects = [
     tools: ['Figma', 'Webflow'],
     year: '2024',
     description: 'A modern platform highlighting Nepal mountains with rich visuals, interactive maps, and comprehensive trail information.',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600&auto=format&fit=crop',
   },
   {
     id: 4,
@@ -50,7 +50,7 @@ const projects = [
     tools: ['Figma', 'Illustrator'],
     year: '2023',
     description: 'A sleek fitness tracking application designed to keep users motivated with intuitive progress charts and workout logging.',
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600&auto=format&fit=crop',
   },
   {
     id: 5,
@@ -60,7 +60,7 @@ const projects = [
     tools: ['Figma', 'Webflow'],
     year: '2024',
     description: 'A clean, user-friendly trekking platform focused on clear navigation, immersive visuals, and effortless trip discovery.',
-    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=1600&auto=format&fit=crop',
   },
 ];
 
@@ -111,7 +111,7 @@ const ToolIcon = ({ name }: { name: string }) => {
 // ============================================================
 // FULL-SCREEN SLIDE
 // ============================================================
-const ProjectSlide = ({ project, index, total }: { project: any; index: number; total: number }) => {
+const ProjectSlide = memo(function ProjectSlide({ project, index, total }: { project: any; index: number; total: number }) {
   const number = String(index + 1).padStart(2, '0');
   const totalStr = String(total).padStart(2, '0');
 
@@ -120,12 +120,13 @@ const ProjectSlide = ({ project, index, total }: { project: any; index: number; 
   const firstPart = words.join(' ');
 
   return (
-    <div className="relative w-screen h-screen flex-shrink-0 overflow-hidden">
+    <div className="relative w-screen h-svh flex-shrink-0 overflow-hidden">
       {/* Background image */}
       <img
         src={project.image}
         alt={project.title}
         draggable={false}
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover"
       />
 
@@ -192,7 +193,7 @@ const ProjectSlide = ({ project, index, total }: { project: any; index: number; 
               {project.tools.map((tool: string) => (
                 <div
                   key={tool}
-                  className="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-white/95 backdrop-blur-md shadow-lg flex items-center justify-center"
+                  className="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-white/95 shadow-lg flex items-center justify-center"
                 >
                   <ToolIcon name={tool} />
                 </div>
@@ -204,7 +205,7 @@ const ProjectSlide = ({ project, index, total }: { project: any; index: number; 
           <div style={{ paddingTop: '0.5rem' }}>
             <Link
               href={`/work/${project.slug}`}
-              className="group/cta inline-flex items-center gap-3 bg-white text-black px-7 py-3.5 md:px-9 md:py-4 rounded-full text-sm md:text-base font-medium hover:bg-white/90 transition-all duration-300"
+              className="group/cta inline-flex items-center gap-3 bg-white text-black px-7 py-3.5 md:px-9 md:py-4 rounded-full text-sm md:text-base font-medium hover:bg-white/90 transition-colors duration-300"
               style={{ fontFamily: SF }}
             >
               View Project
@@ -231,14 +232,17 @@ const ProjectSlide = ({ project, index, total }: { project: any; index: number; 
       </div>
     </div>
   );
-};
+});
 
 // ============================================================
 // MAIN PAGE
 // ============================================================
 export default function WorkPage() {
   const targetRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: targetRef });
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ['start start', 'end end'],
+  });
   const [activeIndex, setActiveIndex] = useState(0);
   const x = useMotionValue(0);
 
@@ -252,18 +256,16 @@ export default function WorkPage() {
   useEffect(() => {
     animate(x, -activeIndex * window.innerWidth, {
       type: 'spring',
-      stiffness: 100,
-      damping: 30,
-      restDelta: 0.001,
+      stiffness: 120,
+      damping: 26,
+      restDelta: 0.5,
     });
   }, [activeIndex, x]);
 
-  // Recalculate on resize
+  // Recalculate on resize (instant, no spring)
   useEffect(() => {
     const handleResize = () => {
-      animate(x, -activeIndex * window.innerWidth, {
-        type: 'spring', stiffness: 100, damping: 30,
-      });
+      x.set(-activeIndex * window.innerWidth);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -287,7 +289,7 @@ export default function WorkPage() {
         style={{ height: `${totalScrollHeight}vh` }}
         className="relative bg-black"
       >
-        <div className="sticky top-0 h-screen w-full overflow-hidden">
+        <div className="sticky top-0 h-svh w-full overflow-hidden">
           
           {/* The Moving Track */}
           <motion.div
@@ -320,7 +322,7 @@ export default function WorkPage() {
               {/* Progress bar */}
               <div className="w-24 md:w-40 h-[2px] bg-white/20 relative overflow-hidden rounded-full">
                 <motion.div
-                  className="absolute top-0 left-0 h-full bg-white origin-left"
+                  className="absolute top-0 left-0 h-full w-full bg-white origin-left"
                   animate={{ scaleX: (activeIndex + 1) / projects.length }}
                   transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
                 />
