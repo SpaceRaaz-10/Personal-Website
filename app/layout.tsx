@@ -10,6 +10,9 @@ export const metadata: Metadata = {
     default: 'Raj Sigdel — UX/UI Designer in Kathmandu, Nepal',
     template: '%s · Raj Sigdel',
   },
+  verification: {
+  google: 'spu4L7p7UDO5eWjIRxA7zZpRISpPmuq5c7JIP8ELsCE',
+},
   description:
     'Raj Sigdel is a UX/UI designer based in Kathmandu, Nepal. Specializing in web design, mobile apps, and dashboards with a focus on clean interfaces, micro-animations, and quality-first thinking.',
   keywords: [
