@@ -1,6 +1,5 @@
 'use client';
 import { memo, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 
 const SYNE = "'Syne', sans-serif";
 const SF = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif";
@@ -72,7 +71,7 @@ function WordStrip() {
     <div aria-hidden className="border-y border-black/10 py-4 md:py-6">
       <div className="max-w-[1400px] mx-auto px-5 md:px-12 lg:px-24 flex flex-wrap items-center gap-x-5 gap-y-2 md:gap-x-9">
         {principles.map((p, i) => {
-  const hasGradient = STRIP_GRADIENT_INDICES.includes(i);
+          const hasGradient = STRIP_GRADIENT_INDICES.includes(i);
           return (
             <span key={p.id} className="flex items-center gap-5 md:gap-9">
               <span
@@ -207,7 +206,6 @@ const Principle = memo(function Principle({
           style={{ fontFamily: SYNE }}
         >
           {principle.title.map((text, i) => (
-            // ⚠️ ONLY CHANGE: padding buffer increased from 0.35em → 0.6em
             <span
               key={i}
               className="block overflow-hidden -mx-[0.6em] px-[0.6em] pb-[0.12em] -mb-[0.02em]"
@@ -247,7 +245,6 @@ const Principle = memo(function Principle({
 export default function Manifesto() {
   const [active, setActive] = useState(0);
   const [headRef, headShown] = useOnceInView<HTMLDivElement>();
-  const [sigRef, sigShown] = useOnceInView<HTMLDivElement>();
 
   return (
     <section data-nav-theme="light" className="relative bg-white text-black">
@@ -306,66 +303,6 @@ export default function Manifesto() {
           {principles.map((p, i) => (
             <Principle key={p.id} principle={p} index={i} onActive={setActive} />
           ))}
-        </div>
-      </div>
-
-      <div className="relative max-w-[1400px] mx-auto px-5 md:px-12 lg:px-24 py-16 md:py-28 lg:py-32">
-        <div
-          ref={sigRef}
-          className={`pt-10 md:pt-16 border-t border-black/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 transition-[opacity,transform] duration-700 ${EASE} motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 ${
-            sigShown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-        >
-          <div className="flex items-center gap-5">
-            <div
-              className="p-[3px] rounded-full shrink-0"
-              style={{
-                background:
-                  'conic-gradient(from 0deg, #2563eb, #9333ea, #ec4899, #facc15, #2563eb)',
-              }}
-            >
-              <div
-                className="w-12 h-12 md:w-14 md:h-14 rounded-full ring-[3px] ring-white bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center text-black font-bold text-sm md:text-base"
-                style={{ fontFamily: SYNE }}
-              >
-                RS
-              </div>
-            </div>
-            <div>
-              <p className="text-lg font-bold text-black" style={{ fontFamily: SYNE }}>
-                Raj Sigdel
-              </p>
-              <p
-                className="text-[10px] tracking-[0.25em] uppercase text-black/50 mt-1"
-                style={{ fontFamily: SF }}
-              >
-                UX/UI Designer · Kathmandu, Nepal
-              </p>
-            </div>
-          </div>
-
-          <Link
-            href="/contact"
-            className="group/sig inline-flex items-center gap-3 rounded-full border border-black/15 px-5 py-3 md:px-7 md:py-4 text-[10px] md:text-xs tracking-[0.3em] uppercase text-black/70 hover:text-white hover:bg-black hover:border-black transition-colors duration-300 font-medium"
-            style={{ fontFamily: SF }}
-          >
-            Start a conversation
-            <span className="w-6 md:w-10 h-[1px] bg-current opacity-50 group-hover/sig:w-12 md:group-hover/sig:w-16 group-hover/sig:opacity-100 transition-all duration-500" />
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="transition-transform duration-500 group-hover/sig:translate-x-1"
-              aria-hidden
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </Link>
         </div>
       </div>
     </section>
