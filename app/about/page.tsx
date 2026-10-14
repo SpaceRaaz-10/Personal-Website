@@ -12,9 +12,9 @@ const SYNE = "'Syne', sans-serif";
 const SF = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif";
 
 const stats = [
-  { to: 1.5, decimals: 1, suffix: '+', label: 'Years Experience' },
-  { to: 10, decimals: 0, suffix: '+', label: 'Projects Done' },
-  { to: 30, decimals: 0, suffix: '+', label: 'Happy Clients' },
+  { to: 2, decimals: 0, suffix: '+', label: 'Years Experience' },
+  { to: 9, decimals: 0, suffix: '+', label: 'Projects Done' },
+  { to: 20, decimals: 0, suffix: '+', label: 'Happy Clients' },
 ];
 
 const skills = [
@@ -22,14 +22,14 @@ const skills = [
   { category: 'Responsive Design', tools: 'Mobile-first design, cross-platform compatibility, fluid layouts' },
   { category: 'Design Tools', tools: 'Figma, Adobe Photoshop, Illustrator, InDesign, Canva' },
   { category: 'Other Skills', tools: 'Design Systems, User Testing, Information Architecture, Usability Testing, High-Fidelity Mockups, Git' },
-  { category: 'Frontend', tools: 'HTML, CSS, basic JavaScript' },
+  { category: 'Frontend', tools: 'HTML, CSS, JavaScript, React' },
   { category: 'No-Code', tools: 'Webflow, Framer' },
 ];
 
 const experience = [
   { year: '2024 - Present', role: 'UX/UI Designer (Fresher)', company: 'Personal Projects' },
   { year: '2024 - Present', role: 'QA Enthusiast', company: 'Self-taught · Manual Testing' },
-  { year: '2023 - 2024', role: 'Graphic Designer', company: 'Blaze Mountains Travels' },
+  { year: '2023 - 2026', role: 'Graphic Designer & SEO Executive', company: 'Blaze Mountains Travels' },
   { year: '2023', role: 'Started UX/UI Journey', company: 'Self-learning' },
 ];
 
@@ -89,10 +89,10 @@ export default function AboutPage() {
               UX/UI Designer and QA enthusiast based in Nepal.
             </h2>
             <div className="space-y-5 text-black/70 text-lg font-light leading-relaxed" style={{ fontFamily: SF }}>
-              <p>I design clean, user-centered interfaces and I care deeply about how they perform. Over the past <strong className="text-black font-semibold">1.5+ years</strong>, I have built my craft through self-learning and hands-on projects, developing a sharp eye for both visual detail and product quality.</p>
-              <p>My background in graphic design gave me the visual foundation, while my interest in <strong className="text-black font-semibold">quality assurance</strong> shaped how I approach every screen: testing, iterating, and refining until the experience feels effortless.</p>
-              <p>I have completed <strong className="text-black font-semibold">10+ personal projects</strong> across websites, dashboards, and mobile apps. My toolkit includes Figma, Webflow, and a growing understanding of front-end development and QA processes.</p>
-              <p>I am currently open to opportunities where I can combine <strong className="text-black font-semibold">design thinking</strong> with a <strong className="text-black font-semibold">quality-first mindset</strong> to build experiences that not only look great, but feel right to use.</p>
+              <p>I am a UX/UI designer focused on clean, user-centered interfaces that perform well. Over the past <strong className="text-black font-semibold">2+ years</strong>, I have developed my craft through self-directed learning and hands-on projects, building a strong eye for both visual detail and product quality.</p>
+              <p>My graphic design background gave me a solid visual foundation, and my interest in <strong className="text-black font-semibold">quality assurance</strong> shapes how I approach every screen. I test, iterate, and refine until the experience feels effortless.</p>
+              <p>I have completed <strong className="text-black font-semibold">10+ personal projects</strong> across websites, dashboards, and mobile apps. My toolkit includes Figma and Webflow, along with a growing knowledge of front-end development and QA processes.</p>
+              <p>I am currently open to opportunities where I can combine <strong className="text-black font-semibold">design thinking</strong> with a <strong className="text-black font-semibold">quality-first mindset</strong> to create products that look great and feel right to use.</p>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-4">
