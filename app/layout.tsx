@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import SmoothScroll from './components/SmoothScroll';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rajsigdel.com.np';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rajsigdel.com.np';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
