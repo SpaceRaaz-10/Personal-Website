@@ -1,6 +1,7 @@
 'use client';
 import { useRef, useState, useEffect, memo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, useScroll, useMotionValueEvent, useMotionValue, animate } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import FooterCTA from '../components/FooterCTA';
