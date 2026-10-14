@@ -9,7 +9,7 @@ import FooterCTA from './components/FooterCTA';
 const SYNE = "'Syne', sans-serif";
 const SF = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif";
 
-const PERSON_MASK_URL = '/person2.png'; 
+const PERSON_MASK_URL = '/person2.webp'; 
 const SOLID_TEXT_COLOR = '#FACC15'; 
 const OUTLINE_TEXT_COLOR = '#FACC15'; 
 
