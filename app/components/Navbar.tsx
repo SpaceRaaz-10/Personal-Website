@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
 import SpaceButton from './SpaceButton';
+import LetsTalkModal from './LetsTalkModal';
 
 const SYNE = "'Syne', sans-serif";
 const SF = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif";
@@ -16,14 +17,12 @@ const navLinks = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isTalkOpen, setIsTalkOpen] = useState(false);
 
-  // Lock body scroll when menu is open
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    if (menuOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
     return () => {
       document.body.style.overflow = '';
     };
@@ -32,42 +31,37 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-5 md:p-8 mix-blend-difference text-white pointer-events-none">
-        {/* Logo — auto-scales on mobile */}
+        {/* Logo */}
         <div className="pointer-events-auto">
           <Logo />
         </div>
 
         {/* Desktop Nav links */}
-        <div
-          className="hidden md:flex gap-12 text-sm font-medium pointer-events-auto"
-          style={{ fontFamily: SF }}
-        >
+        <div className="hidden md:flex gap-12 text-sm font-medium pointer-events-auto" style={{ fontFamily: SF }}>
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="hover:opacity-60 transition-opacity"
-            >
+            <Link key={link.href} href={link.href} className="hover:opacity-60 transition-opacity">
               {link.label}
             </Link>
           ))}
         </div>
 
-        {/* Desktop spacer to balance the layout */}
+        {/* Desktop spacer */}
         <div className="hidden md:block w-[120px] pointer-events-none" />
 
-        {/* Mobile spacer — leaves room for the hamburger + Let's Talk button */}
+        {/* Mobile spacer */}
         <div className="md:hidden w-[110px] pointer-events-none" />
       </nav>
 
-      {/* Desktop "Let's Talk" button */}
-      <div className="hidden md:block fixed top-0 right-0 p-6 md:p-8 z-[51] pointer-events-auto">
+      {/* ✅ Desktop "Let's Talk" — opens modal */}
+      <div
+        className="hidden md:block fixed top-0 right-0 p-6 md:p-8 z-[51] pointer-events-auto cursor-pointer"
+        onClick={() => setIsTalkOpen(true)}
+      >
         <SpaceButton>Let&apos;s Talk</SpaceButton>
       </div>
 
-      {/* Mobile top-right actions: Let's Talk (compact) + Hamburger */}
+      {/* Mobile top-right: Let's Talk + Hamburger */}
       <div className="md:hidden fixed top-0 right-0 p-5 z-[51] pointer-events-auto flex items-center gap-3">
-        {/* Compact Let's Talk — hidden when menu is open */}
         <AnimatePresence>
           {!menuOpen && (
             <motion.div
@@ -76,13 +70,14 @@ export default function Navbar() {
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.25 }}
             >
-              <Link
-                href="/contact"
+              <button
+                type="button"
+                onClick={() => setIsTalkOpen(true)}
                 className="inline-flex items-center bg-white text-black border border-white px-4 py-2 rounded-full text-[11px] font-medium tracking-wide"
                 style={{ fontFamily: SF }}
               >
                 Let&apos;s Talk
-              </Link>
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -125,7 +120,6 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="md:hidden fixed inset-0 z-[100] bg-black text-white"
           >
-            {/* Top bar within menu (logo + close) */}
             <div className="flex justify-between items-center p-5">
               <Logo />
               <button
@@ -134,22 +128,12 @@ export default function Navbar() {
                 aria-label="Close menu"
                 className="w-11 h-11 rounded-full bg-white text-black flex items-center justify-center shadow-lg active:scale-95 transition-transform duration-200"
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 6L6 18M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            {/* Menu links */}
             <div className="flex flex-col justify-center items-start px-6 pt-12 h-[calc(100%-80px)]">
               <nav className="flex flex-col w-full">
                 {navLinks.map((link, i) => (
@@ -158,11 +142,7 @@ export default function Navbar() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
-                    transition={{
-                      duration: 0.5,
-                      delay: 0.08 + i * 0.08,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
+                    transition={{ duration: 0.5, delay: 0.08 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                     className="border-b border-white/10"
                   >
                     <Link
@@ -177,7 +157,6 @@ export default function Navbar() {
                 ))}
               </nav>
 
-              {/* Bottom info inside menu */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -185,10 +164,7 @@ export default function Navbar() {
                 className="mt-auto mb-8 w-full"
               >
                 <div className="flex flex-col gap-2">
-                  <span
-                    className="text-[10px] tracking-[0.3em] uppercase text-white/40"
-                    style={{ fontFamily: SF }}
-                  >
+                  <span className="text-[10px] tracking-[0.3em] uppercase text-white/40" style={{ fontFamily: SF }}>
                     Get in touch
                   </span>
                   <a
@@ -204,6 +180,9 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ✅ Lets Talk Modal */}
+      <LetsTalkModal isOpen={isTalkOpen} onClose={() => setIsTalkOpen(false)} />
     </>
   );
 }

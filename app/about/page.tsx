@@ -62,10 +62,13 @@ export default function AboutPage() {
       <Navbar />
 
       {/* HERO */}
-      <section className="pt-48 pb-16 px-8 md:px-24">
+      <section className="pt-32 md:pt-48 pb-16 px-5 md:px-24">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs font-bold tracking-widest text-black/40 uppercase mb-6" style={{ fontFamily: SF }}>About Me</p>
-          <h1 className="text-6xl md:text-8xl lg:text-[7.5rem] font-extrabold leading-[1.05] text-black" style={{ fontFamily: SYNE, letterSpacing: '-0.03em' }}>
+          <h1
+            className="text-[clamp(2.25rem,9vw,7.5rem)] font-extrabold leading-[1.05] text-black break-words"
+            style={{ fontFamily: SYNE, letterSpacing: '-0.03em' }}
+          >
             <StaggeredText text="Designer and" gradientWords={[0]} />
             <br />
             <StaggeredText text="problem solver." gradientWords={[0]} startIndex={2} />
@@ -74,10 +77,10 @@ export default function AboutPage() {
       </section>
 
       {/* BIO */}
-      <section className="px-8 md:px-24 py-16">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+      <section className="px-5 md:px-24 py-16">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
           <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }} className="relative">
-            <img src="/whiteshirtimage.png" alt="Raj Sigdel — UX/UI Designer and QA enthusiast" className="rounded-3xl shadow-xl" />
+            <img src="/whiteshirtimage.png" alt="Raj Sigdel — UX/UI Designer and QA enthusiast" className="rounded-3xl shadow-xl w-full" />
             <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md border border-black/5 px-5 py-3 rounded-full flex items-center gap-3 shadow-xl">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <span className="text-sm font-semibold text-black" style={{ fontFamily: SF }}>Available for work</span>
@@ -88,7 +91,7 @@ export default function AboutPage() {
             <h2 className="text-2xl md:text-4xl font-bold leading-snug mb-8" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>
               UX/UI Designer and QA enthusiast based in Nepal.
             </h2>
-            <div className="space-y-5 text-black/70 text-lg font-light leading-relaxed" style={{ fontFamily: SF }}>
+            <div className="space-y-5 text-black/70 text-base md:text-lg font-light leading-relaxed" style={{ fontFamily: SF }}>
               <p>I am a UX/UI designer focused on clean, user-centered interfaces that perform well. Over the past <strong className="text-black font-semibold">2+ years</strong>, I have developed my craft through self-directed learning and hands-on projects, building a strong eye for both visual detail and product quality.</p>
               <p>My graphic design background gave me a solid visual foundation, and my interest in <strong className="text-black font-semibold">quality assurance</strong> shapes how I approach every screen. I test, iterate, and refine until the experience feels effortless.</p>
               <p>I have completed <strong className="text-black font-semibold">10+ personal projects</strong> across websites, dashboards, and mobile apps. My toolkit includes Figma and Webflow, along with a growing knowledge of front-end development and QA processes.</p>
@@ -108,7 +111,7 @@ export default function AboutPage() {
       </section>
 
       {/* STATS */}
-      <section className="px-8 md:px-24 py-24 border-t border-black/10 mt-16">
+      <section className="px-5 md:px-24 py-24 border-t border-black/10 mt-16">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           {stats.map((stat, i) => (
             <motion.div key={stat.label} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}>
@@ -122,7 +125,7 @@ export default function AboutPage() {
       </section>
 
       {/* SKILLS */}
-      <section className="px-8 md:px-24 py-24 bg-[#F5F5F7]">
+      <section className="px-5 md:px-24 py-24 bg-[#F5F5F7]">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-5xl md:text-7xl font-extrabold mb-16" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>
             Tools &amp; <span className="gradient-text">Skills.</span>
@@ -139,7 +142,7 @@ export default function AboutPage() {
       </section>
 
       {/* EXPERIENCE */}
-      <section className="px-8 md:px-24 py-32 bg-white">
+      <section className="px-5 md:px-24 py-32 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-5xl md:text-7xl font-extrabold mb-16" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>
             <span className="gradient-text">Experience.</span>
@@ -157,7 +160,7 @@ export default function AboutPage() {
       </section>
 
       {/* EDUCATION */}
-      <section className="px-8 md:px-24 py-32 bg-[#F5F5F7]">
+      <section className="px-5 md:px-24 py-32 bg-[#F5F5F7]">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-5xl md:text-7xl font-extrabold mb-16" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>
             <span className="gradient-text">Education.</span>
@@ -182,7 +185,7 @@ export default function AboutPage() {
       </section>
 
       {/* CERTIFICATIONS */}
-      <section className="px-8 md:px-24 py-32 bg-white">
+      <section className="px-5 md:px-24 py-32 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-5xl md:text-7xl font-extrabold mb-16" style={{ fontFamily: SYNE, letterSpacing: '-0.02em' }}>
             <span className="gradient-text">Certifications.</span>

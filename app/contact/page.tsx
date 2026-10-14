@@ -10,10 +10,26 @@ import FooterCTA from '../components/FooterCTA';
 const SYNE = "'Syne', sans-serif";
 const SF = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif";
 
+const EMAIL = 'rajsigdel1000@gmail.com';
+
+// Detect mobile once (safe on server — returns false)
+const isMobileDevice = () => {
+  if (typeof window === 'undefined') return false;
+  return /android|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(
+    navigator.userAgent
+  );
+};
+
+// On mobile → mailto: opens Gmail/Outlook app
+// On desktop → Gmail web compose in new tab
+const emailHref = isMobileDevice()
+  ? `mailto:${EMAIL}`
+  : `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}`;
+
 const socials = [
   {
     label: 'Email',
-    href: 'mailto:rajsigdel1000@gmail.com',
+    href: emailHref,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-6 h-6">
         <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -240,7 +256,7 @@ export default function ContactPage() {
                   <motion.a
                     key={social.label}
                     href={social.href}
-                    target="_blank"
+                    target={social.href.startsWith('mailto') ? '_self' : '_blank'}
                     rel="noopener noreferrer"
                     aria-label={social.label}
                     initial={{ opacity: 0, y: 20 }}
